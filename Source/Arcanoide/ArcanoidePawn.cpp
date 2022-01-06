@@ -8,10 +8,19 @@
 #include "Engine/World.h"
 #include "DrawDebugHelpers.h"
 
+#include <Components/BoxComponent.h>
+
 AArcanoidePawn::AArcanoidePawn(const FObjectInitializer& ObjectInitializer) 
 	: Super(ObjectInitializer)
 {
 	AutoPossessPlayer = EAutoReceiveInput::Player0;
+
+	RootScene = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
+	RootComponent = RootScene;
+
+	CollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("Collision Box"));
+	CollisionBox->SetupAttachment(RootComponent);
+	CollisionBox->SetBoxExtent(FVector(50.f, 250.f, 25.f));
 }
 
 void AArcanoidePawn::Tick(float DeltaSeconds)
@@ -27,7 +36,16 @@ void AArcanoidePawn::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 void AArcanoidePawn::Move(float Value)
 {
+	AddMovementInput(FVector(0.f, 1.f, 0.f), Value);
+/*
+	FVector Mouvement = FVector(0.f, 1.f, 0.f) * Value * MovementSpeed;
 
+	FVector LocationPawn = GetActorLocation();
+
+	SetActorLocation(LocationPawn + Mouvement);
+*/
+
+	/*
 	if ((Controller != nullptr) && (Value != 0.0f))
 	{
 		
@@ -43,4 +61,6 @@ void AArcanoidePawn::Move(float Value)
 		// add movement in that direction
 		AddMovementInput(Direction, Value);
 	}
+
+	*/
 }

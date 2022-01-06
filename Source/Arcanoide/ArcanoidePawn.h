@@ -11,6 +11,13 @@ class AArcanoidePawn : public APawn
 {
 	GENERATED_UCLASS_BODY()
 
+private:
+	UPROPERTY(VisibleAnywhere, BluePrintReadOnly, Category = VictoryBox, meta = (AllowPrivateAccess = "true"))
+	class USceneComponent* RootScene;
+
+	UPROPERTY(VisibleAnywhere, BluePrintReadOnly, Category = VictoryBox, meta = (AllowPrivateAccess = "true"))
+	class UBoxComponent* CollisionBox;
+
 public:
 
 	virtual void Tick(float DeltaSeconds) override;
@@ -19,7 +26,7 @@ public:
 
 protected:
 	UPROPERTY(EditAnywhere, Category="Movement")
-	float MovementSpeed = 500.f;
+	float MovementSpeed = 10.f;
 	
 	void Move(float Value);
 };
