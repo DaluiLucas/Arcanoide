@@ -17,84 +17,30 @@ AArcanoidePawn::AArcanoidePawn(const FObjectInitializer& ObjectInitializer)
 void AArcanoidePawn::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
-
-	if (APlayerController* PC = Cast<APlayerController>(GetController()))
-	{
-		if (UHeadMountedDisplayFunctionLibrary::IsHeadMountedDisplayEnabled())
-		{
-			if (UCameraComponent* OurCamera = PC->GetViewTarget()->FindComponentByClass<UCameraComponent>())
-			{
-				FVector Start = OurCamera->GetComponentLocation();
-				FVector End = Start + (OurCamera->GetComponentRotation().Vector() * 8000.0f);
-				TraceForBlock(Start, End, true);
-			}
-		}
-		else
-		{
-			FVector Start, Dir, End;
-			PC->DeprojectMousePositionToWorld(Start, Dir);
-			End = Start + (Dir * 8000.0f);
-			TraceForBlock(Start, End, false);
-		}
-	}
 }
 
 void AArcanoidePawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-	PlayerInputComponent->BindAction("ResetVR", EInputEvent::IE_Pressed, this, &AArcanoidePawn::OnResetVR);
-	PlayerInputComponent->BindAction("TriggerClick", EInputEvent::IE_Pressed, this, &AArcanoidePawn::TriggerClick);
+	PlayerInputComponent->BindAxis(TEXT("Move"), this, &AArcanoidePawn::Move);
 }
 
-void AArcanoidePawn::CalcCamera(float DeltaTime, struct FMinimalViewInfo& OutResult)
+void AArcanoidePawn::Move(float Value)
 {
-	Super::CalcCamera(DeltaTime, OutResult);
 
-	OutResult.Rotation = FRotator(-90.0f, -90.0f, 0.0f);
-}
+	if ((Controller != nullptr) && (Value != 0.0f))
+	{
+		
 
-void AArcanoidePawn::OnResetVR()
-{
-	UHeadMountedDisplayFunctionLibrary::ResetOrientationAndPosition();
-}
+		// find out which way is right
+		const FRotator Rotation = Controller->GetControlRotation();
+		const FRotator YawRotation(0, Rotation.Yaw, 0);
 
-void AArcanoidePawn::TriggerClick()
-{
-	if (CurrentBlockFocus)
-	{
-		CurrentBlockFocus->HandleClicked();
-	}
-}
-
-void AArcanoidePawn::TraceForBlock(const FVector& Start, const FVector& End, bool bDrawDebugHelpers)
-{
-	FHitResult HitResult;
-	GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECC_Visibility);
-	if (bDrawDebugHelpers)
-	{
-		DrawDebugLine(GetWorld(), Start, HitResult.Location, FColor::Red);
-		DrawDebugSolidBox(GetWorld(), HitResult.Location, FVector(20.0f), FColor::Red);
-	}
-	if (HitResult.Actor.IsValid())
-	{
-		AArcanoideBlock* HitBlock = Cast<AArcanoideBlock>(HitResult.Actor.Get());
-		if (CurrentBlockFocus != HitBlock)
-		{
-			if (CurrentBlockFocus)
-			{
-				CurrentBlockFocus->Highlight(false);
-			}
-			if (HitBlock)
-			{
-				HitBlock->Highlight(true);
-			}
-			CurrentBlockFocus = HitBlock;
-		}
-	}
-	else if (CurrentBlockFocus)
-	{
-		CurrentBlockFocus->Highlight(false);
-		CurrentBlockFocus = nullptr;
+		// get right vector 
+		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, Direction.ToString());
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, YawRotation.ToString());
+		// add movement in that direction
+		AddMovementInput(Direction, Value);
 	}
 }
