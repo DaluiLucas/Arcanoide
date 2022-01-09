@@ -37,30 +37,4 @@ void AArcanoidePawn::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 void AArcanoidePawn::Move(float Value)
 {
 	AddMovementInput(FVector(0.f, 1.f, 0.f), Value);
-/*
-	FVector Mouvement = FVector(0.f, 1.f, 0.f) * Value * MovementSpeed;
-
-	FVector LocationPawn = GetActorLocation();
-
-	SetActorLocation(LocationPawn + Mouvement);
-*/
-
-	/*
-	if ((Controller != nullptr) && (Value != 0.0f))
-	{
-		
-
-		// find out which way is right
-		const FRotator Rotation = Controller->GetControlRotation();
-		const FRotator YawRotation(0, Rotation.Yaw, 0);
-
-		// get right vector 
-		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, Direction.ToString());
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, YawRotation.ToString());
-		// add movement in that direction
-		AddMovementInput(Direction, Value);
-	}
-
-	*/
 }
