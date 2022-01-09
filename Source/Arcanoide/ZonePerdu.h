@@ -12,10 +12,10 @@ class ARCANOIDE_API AZonePerdu : public AActor
 	GENERATED_BODY()
 	
 private:
-	UPROPERTY(VisibleAnywhere, BluePrintReadOnly, Category = VictoryBox, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(VisibleAnywhere, BluePrintReadOnly, Category = ZonePerdu, meta = (AllowPrivateAccess = "true"))
 	class USceneComponent* RootScene;
 
-	UPROPERTY(VisibleAnywhere, BluePrintReadOnly, Category = VictoryBox, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(VisibleAnywhere, BluePrintReadOnly, Category = ZonePerdu, meta = (AllowPrivateAccess = "true"))
 	class UBoxComponent* CollisionBox;
 
 public:	
