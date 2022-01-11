@@ -26,6 +26,6 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-	UPROPERTY(editinstanceonly, BlueprintReadOnly, Category = Patate, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(editinstanceonly, BlueprintReadOnly, Category = Limiter, meta = (AllowPrivateAccess = "true"))
 	float Limiter = 0.f;
 };

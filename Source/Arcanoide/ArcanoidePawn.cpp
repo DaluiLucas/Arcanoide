@@ -22,8 +22,6 @@ AArcanoidePawn::AArcanoidePawn(const FObjectInitializer& ObjectInitializer)
 	CollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("Collision Box"));
 	CollisionBox->SetupAttachment(RootComponent);
 	CollisionBox->SetBoxExtent(FVector(50.f, 250.f, 25.f));
-	
-
 }
 
 void AArcanoidePawn::BeginPlay()
