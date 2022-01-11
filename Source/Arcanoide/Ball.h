@@ -30,6 +30,12 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Ball, meta = (AllowPrivateAccess = "true"));
 	class UProjectileMovementComponent* BallMovement;
 
+	UPROPERTY(EditDefaultsOnly, Category = Ball, meta = (AllowPrivateAccess = "true"));
+	float MovementSpeed;
+
+	UFUNCTION()
+		void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& hit);
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
