@@ -23,10 +23,7 @@ protected:
 		class USceneComponent* RootScene;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = BreakableBlock, meta = (AllowPrivateAccess = "true"));
-		class UBoxComponent* CollisionBox;
-
-	UFUNCTION()
-	void OnBeginOverlap(UPrimitiveComponent *OverlapperComp, AActor *OtherActor, UPrimitiveComponent *OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult);
+	class UBoxComponent* CollisionBox;
 
 
 public:	

@@ -2,6 +2,8 @@
 
 
 #include "Ball.h"
+#include "BreakableBlock.h"
+
 #include <Components/SphereComponent.h>
 #include <GameFramework/ProjectileMovementComponent.h>
 // Sets default values
@@ -15,6 +17,7 @@ ABall::ABall()
 	SphereComponent->SetCollisionProfileName("Ball");
 	SphereComponent->SetSimulatePhysics(true);
 	SphereComponent->SetNotifyRigidBodyCollision(true);
+	SphereComponent->OnComponentHit.AddDynamic(this, &ABall::OnHit);
 
 	RootComponent = SphereComponent;
 
@@ -32,5 +35,15 @@ void ABall::BeginPlay()
 void ABall::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+}
+
+void ABall::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& hit)
+{
+	GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Red, TEXT("HIT"));
+	ABreakableBlock* Block = Cast<ABreakableBlock>(OtherActor);
+	if (Block != nullptr)
+	{
+		Block->Destroy();
+	}
 }
 
