@@ -21,7 +21,7 @@ ABall::ABall()
 	RootComponent = SphereComponent;
 
 	BallMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("Projectile Movement"));
-	BallMovement->InitialSpeed = 1500.f;
+	BallMovement->InitialSpeed = 0.f;
 }
 
 // Called when the game starts or when spawned
@@ -46,5 +46,7 @@ void ABall::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveCo
 void ABall::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	GEngine->AddOnScreenDebugMessage(-1, 0.0f, FColor::Yellow, FString::Printf(TEXT("MS: %f"), MovementSpeed));
+
 }
 

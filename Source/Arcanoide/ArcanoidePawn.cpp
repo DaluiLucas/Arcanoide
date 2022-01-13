@@ -9,6 +9,7 @@
 #include "DrawDebugHelpers.h"
 #include <Kismet/KismetSystemLibrary.h>
 #include "Wall.h"
+#include "Ball.h"
 #include <Components/BoxComponent.h>
 
 AArcanoidePawn::AArcanoidePawn(const FObjectInitializer& ObjectInitializer) 
@@ -28,6 +29,15 @@ void AArcanoidePawn::BeginPlay()
 {
 	Super::BeginPlay();
 	CollisionBox->OnComponentBeginOverlap.AddDynamic(this, &AArcanoidePawn::OnBeginOverlap);
+
+	if (BallClass != nullptr) {
+		FVector ForwardVector = GetActorForwardVector();
+		float SpawnDistance = 40.f;
+		FVector SpawnLocation = GetActorLocation() + (ForwardVector * SpawnDistance);
+		FTransform SpawnTransform(GetActorRotation(), SpawnLocation);
+		Ball = GetWorld()->SpawnActorDeferred<ABall>(BallClass, SpawnTransform);
+		Ball->FinishSpawning(SpawnTransform);
+	}
 }
 void AArcanoidePawn::Tick(float DeltaSeconds)
 {
@@ -38,11 +48,19 @@ void AArcanoidePawn::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	PlayerInputComponent->BindAxis(TEXT("Move"), this, &AArcanoidePawn::Move);
+	PlayerInputComponent->BindAction(TEXT("Throw"), IE_Pressed, this, &AArcanoidePawn::ThrowBall);
+
 }
 
 void AArcanoidePawn::Move(float Value)
 {
 	AddMovementInput(FVector(0.f, 1.f, 0.f), Value);
+}
+
+void AArcanoidePawn::ThrowBall()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Throw"));
+	Ball->MovementSpeed = 2000.0f;
 }
 
 void AArcanoidePawn::OnBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)

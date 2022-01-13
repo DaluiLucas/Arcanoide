@@ -26,11 +26,18 @@ public:
 
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Patate, meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<class ABall> BallClass;
+
+	class ABall* Ball;
+
 protected:
 	UPROPERTY(EditAnywhere, Category="Movement")
 	float MovementSpeed = 10.f;
 	
 	void Move(float Value);
+
+	void ThrowBall();
 
 	UFUNCTION()
 	void OnBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
