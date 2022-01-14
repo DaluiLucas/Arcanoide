@@ -21,7 +21,9 @@ ABall::ABall()
 	RootComponent = SphereComponent;
 
 	BallMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("Projectile Movement"));
-	BallMovement->InitialSpeed = 0.f;
+	BallMovement->InitialSpeed = 2500.f;
+	BallMovement->Bounciness = 1.f; //test
+	BallMovement->MaxSpeed = 0.0f;
 }
 
 // Called when the game starts or when spawned
@@ -34,7 +36,6 @@ void ABall::BeginPlay()
 
 void ABall::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& hit)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Red, TEXT("HIT"));
 	ABreakableBlock* Block = Cast<ABreakableBlock>(OtherActor);
 	if (Block != nullptr)
 	{
@@ -46,7 +47,5 @@ void ABall::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveCo
 void ABall::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	GEngine->AddOnScreenDebugMessage(-1, 0.0f, FColor::Yellow, FString::Printf(TEXT("MS: %f"), MovementSpeed));
-
 }
 

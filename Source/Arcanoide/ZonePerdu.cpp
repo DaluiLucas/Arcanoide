@@ -4,6 +4,9 @@
 #include "ZonePerdu.h"
 
 #include <Components/BoxComponent.h>
+#include "Kismet/GameplayStatics.h"
+
+#include "ArcanoidePawn.h"
 #include <Arcanoide/Ball.h>
 
 // Sets default values
@@ -33,7 +36,10 @@ void AZonePerdu::OnBeginOverlap(UPrimitiveComponent* OverlapComp, AActor* OtherA
 	if (Cast<ABall>(OtherActor) != nullptr)
 	{
 		OtherActor->Destroy();
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("PERDU !!!"));
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("Fallen !!!"));
+
+		AArcanoidePawn* PlayerPawn = Cast<AArcanoidePawn>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
+		PlayerPawn->BallDestroyed();
 	}
 }
 
