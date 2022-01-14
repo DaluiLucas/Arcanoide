@@ -22,12 +22,17 @@ protected:
 	UPROPERTY(VisibleAnywhere, BluePrintReadOnly, Category = BreakableBlock, meta = (AllowPrivateAccess = "true"))
 	class USceneComponent* RootScene;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = BreakableBlock, meta = (AllowPrivateAccess = "true"));
-	class UBoxComponent* CollisionBox;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Collision, meta = (AllowPrivateAccess = "true"));
+	class UCapsuleComponent* CollisionBox;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Mash, meta = (AllowPrivateAccess = "true"));
+	class UStaticMeshComponent* MeshComp;
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	UPROPERTY(VisibleAnywhere, Category = Color, meta = (AllowPrivateAccess = "true"));
+	FColor Color;
 
 };

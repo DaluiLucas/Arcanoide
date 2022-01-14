@@ -2,7 +2,7 @@
 
 
 #include "BreakableBlock.h"
-#include <Components/BoxComponent.h>
+#include <Components/CapsuleComponent.h>
 
 // Sets default values
 ABreakableBlock::ABreakableBlock()
@@ -13,16 +13,22 @@ ABreakableBlock::ABreakableBlock()
 	RootScene = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 	RootComponent = RootScene;
 
-	CollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("Collision Box"));
+	CollisionBox = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Collision Box"));
 	CollisionBox->SetupAttachment(RootComponent);
-	CollisionBox->SetBoxExtent(FVector(60.f, 60.f, 60.f));
+	CollisionBox->SetCapsuleSize(30.0f, 55.0f);
 	CollisionBox->SetRelativeLocation(FVector(0.f, 0.f, 120.f));
+
+	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh Comp"));
+	MeshComp->SetupAttachment(CollisionBox);
+
+
 }
 
 // Called when the game starts or when spawned
 void ABreakableBlock::BeginPlay()
 {
 	Super::BeginPlay();
+	MeshComp->SetVectorParameterValueOnMaterials(FName("Color"), FVector(0.6f, 0.6f, 0.2f));
 	
 }
 
